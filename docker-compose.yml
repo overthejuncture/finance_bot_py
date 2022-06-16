@@ -4,5 +4,7 @@ services:
                 image: python:3.9.13
                 working_dir: /home
                 volumes:
-                        - $PWD:/home
+                        - $PWD:$VIRTUAL_ENV
                 user: $UID:$GID
+                environment:
+                        - PATH=$VIRTUAL_ENV/venv/bin:$PATH
