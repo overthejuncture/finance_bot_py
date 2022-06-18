@@ -3,6 +3,6 @@ from bot import bot
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        bot.start()
+        bot.startbot()
 
 
