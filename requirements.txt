@@ -1,6 +1,5 @@
 APScheduler==3.6.3
 asgiref==3.5.2
-bot-helper-py==0.1
 cachetools==4.2.2
 certifi==2022.6.15
 Django==4.0.5

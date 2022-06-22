@@ -8,3 +8,4 @@ services:
                 user: $UID:$GID
                 environment:
                         - PATH=$VIRTUAL_ENV/venv/bin:$PATH
+                        - HOME=$VIRTUAL_ENV
