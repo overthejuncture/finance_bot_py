@@ -1,6 +1,7 @@
 import logging
 from .handlers import (
     list_categories,
+    categories_actions,
     start,
     add_category,
     add_spendings
@@ -25,6 +26,7 @@ def startbot() -> None:
     dispatcher.add_handler(add_category.handler('add_category'))
     dispatcher.add_handler(add_spendings.handler('add_spendings'))
     dispatcher.add_handler(list_categories.handler('list_categories'))
+    dispatcher.add_handler(categories_actions.handler('categories_actions'))
 
     updater.start_polling()
     updater.idle()
