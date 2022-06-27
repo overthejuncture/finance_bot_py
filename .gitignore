@@ -2,8 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+*.swp
 venv
+.python_history
 .vscode
 db.sqlite3
 .cache
