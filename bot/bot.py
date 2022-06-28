@@ -17,6 +17,9 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+# logger = logging.getLogger('django.db.backends')    
+# logger.setLevel(logging.DEBUG)
+# logger.addHandler(logging.StreamHandler())
 
 def startbot() -> None:
     updater = Updater("5550070979:AAGN4lS3kXhtY9eWN-c5eNLKa6yI3TQ0stU")

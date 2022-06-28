@@ -9,7 +9,11 @@ class User(models.Model):
         return "{id} {telegram_id}".format(id=self.pk, telegram_id=self.telegram_id)
 
     def byUpdate(update: Update):
-        return User.objects.get(pk=update.message.from_user.id)
+        if update.message != None:
+            id = update.message.from_user.id
+        else:
+            id = update.callback_query.from_user.id
+        return User.objects.get(pk=id)
 
 
 class Category(models.Model):
