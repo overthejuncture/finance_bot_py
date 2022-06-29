@@ -53,10 +53,10 @@ def button_click_action(update: Update, context: CallbackContext):
         return 0
     
     data = json.loads(update.callback_query.data)
-    send_category_actions(update, data.get(utils.DATA_LITERAL).get('id'))
+    _send_category_actions(update, data.get(utils.DATA_LITERAL).get('id'))
     return 1
 
-def send_category_actions(update: Update, id: int):
+def _send_category_actions(update: Update, id: int):
     cat = Category.objects.get(pk=id)
     update.callback_query.edit_message_reply_markup()
     update.callback_query.message.reply_text(
@@ -79,9 +79,8 @@ def apply_category_action(update: Update, context: CallbackContext):
         return 2
 
 def edit_category(update: Update, context: CallbackContext):
-    new_name = update.message.text
     cat = Category.objects.get(pk=context.user_data['category'])
-    cat.name = new_name
+    cat.name = update.message.text
     cat.save()
     update.message.reply_text('Обновлено')
     return ConversationHandler.END
