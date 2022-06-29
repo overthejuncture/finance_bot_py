@@ -11,6 +11,8 @@ from telegram.ext import (
     ConversationHandler,
     CallbackQueryHandler,
     CallbackContext,
+    MessageHandler,
+    Filters,
 )
 
 from bot.models import (
@@ -27,7 +29,8 @@ def handler(name: str):
         entry_points=[CommandHandler(name, categories_actions)],
         states= {
             0: [CallbackQueryHandler(button_click_action)],
-            1: [CallbackQueryHandler(apply_category_action)]
+            1: [CallbackQueryHandler(apply_category_action)],
+            2: [MessageHandler(Filters.text, edit_category)]
         },
         fallbacks=[],
         run_async=True,
@@ -50,17 +53,35 @@ def button_click_action(update: Update, context: CallbackContext):
         return 0
     
     data = json.loads(update.callback_query.data)
-    send_category_actions(update, data.get('data').get('id'))
+    send_category_actions(update, data.get(utils.DATA_LITERAL).get('id'))
     return 1
 
 def send_category_actions(update: Update, id: int):
     cat = Category.objects.get(pk=id)
+    update.callback_query.edit_message_reply_markup()
     update.callback_query.message.reply_text(
         text=cat.name,
         reply_markup=InlineKeyboardMarkup(utils.create_action_buttons(data={'id': id}, edit=True, delete=True))
     )
 
 def apply_category_action(update: Update, context: CallbackContext):
-    data = json.loads(update.callback_query.data)
-    action = callback_helper.get_action(update.callback_query)
-    print(data)
+    action, data = callback_helper.get_action(update.callback_query)
+    cat = Category.objects.get(pk=data.get('id'))
+    update.callback_query.edit_message_reply_markup()
+    if action == utils.DELETE_ACTION:
+        cat.delete()
+        update.callback_query.message.reply_text('Удалено')
+        ConversationHandler.END
+    
+    if action == utils.EDIT_ACTION:
+        context.user_data['category'] = cat.pk
+        update.callback_query.message.reply_text('Введите новое наименование категории')
+        return 2
+
+def edit_category(update: Update, context: CallbackContext):
+    new_name = update.message.text
+    cat = Category.objects.get(pk=context.user_data['category'])
+    cat.name = new_name
+    cat.save()
+    update.message.reply_text('Обновлено')
+    return ConversationHandler.END
