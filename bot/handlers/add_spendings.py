@@ -31,7 +31,7 @@ def handler(name: str):
     )
 
 def add_spendings_command(update: Update, context: CallbackContext):
-    update.message.reply_text('Введите количество в рублях')
+    update.message.reply_text('Количество в рублях')
     return 0
 
 def get_savings_amount(update: Update, context: CallbackContext):

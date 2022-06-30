@@ -4,7 +4,8 @@ from .handlers import (
     categories_actions,
     start,
     add_category,
-    add_spendings
+    add_spendings,
+    list_spendings_for_category,
 )
 
 from telegram.ext import (
@@ -30,6 +31,7 @@ def startbot() -> None:
     dispatcher.add_handler(add_spendings.handler('add_spendings'))
     dispatcher.add_handler(list_categories.handler('list_categories'))
     dispatcher.add_handler(categories_actions.handler('categories_actions'))
+    dispatcher.add_handler(list_spendings_for_category.handler('list_spendings_for_category'))
 
     updater.start_polling()
     updater.idle()

@@ -15,4 +15,4 @@ def handler(name: str):
     return CommandHandler(name, list)
 
 def list(update: Update, context: CallbackContext):
-    update.message.reply_text(utils.listAll(User.byUpdate(update).categories.all()))
+    update.message.reply_text(utils.list_all(User.byUpdate(update).categories.all()))

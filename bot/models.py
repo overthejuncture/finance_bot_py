@@ -26,7 +26,7 @@ class Category(models.Model):
 class Spending(models.Model):
     amount = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='spendings')
 
     def __str__(self) -> str:
         return "ID: {id} Amount: {amount} User.ID: {user} Category.ID: {cat}".format(
