@@ -26,6 +26,7 @@ class Category(models.Model):
 class Spending(models.Model):
     amount = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
