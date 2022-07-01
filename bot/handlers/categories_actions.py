@@ -1,11 +1,10 @@
 from subprocess import call
 from telegram import (
     Update,
-    InlineKeyboardButton,
     InlineKeyboardMarkup
 )
-from bot_helper_py import bot as utils
-from bot_helper_py import callback_query as callback_helper
+from bot_helper_py import utils
+from bot_helper_py import callback_utils
 from telegram.ext import (
     CommandHandler,
     ConversationHandler,
@@ -19,8 +18,6 @@ from bot.models import (
     Category,
     User
 )
-
-from typing import List
 
 import json
 
@@ -37,7 +34,7 @@ def handler(name: str):
         allow_reentry=True
     )
 
-def categories_actions(update: Update, context: CallbackContext):
+def categories_actions(update: Update, _: CallbackContext):
     text, reply_markup = utils.list_with_keyboard_and_pager(
         User.byUpdate(update).categories.all(),
         field=lambda x: x.name
@@ -45,8 +42,8 @@ def categories_actions(update: Update, context: CallbackContext):
     update.message.reply_text(text=text, reply_markup=reply_markup)
     return 0
 
-def button_click_action(update: Update, context: CallbackContext):
-    if callback_helper.is_pager_action(update.callback_query):
+def button_click_action(update: Update, _: CallbackContext):
+    if callback_utils.is_pager_action(update.callback_query):
         start, limit = utils.proccess_pager(update)
         text, reply_markup = utils.list_with_keyboard_and_pager(User.byUpdate(update).categories.all(), start=start, limit=limit)
         update.callback_query.edit_message_text(text=text, reply_markup=reply_markup)
@@ -65,7 +62,7 @@ def _send_category_actions(update: Update, id: int):
     )
 
 def apply_category_action(update: Update, context: CallbackContext):
-    action, data = callback_helper.get_action(update.callback_query)
+    action, data = callback_utils.get_action(update.callback_query)
     cat = Category.objects.get(pk=data.get('id'))
     update.callback_query.edit_message_reply_markup()
     if action == utils.DELETE_ACTION:

@@ -1,6 +1,7 @@
 from functools import total_ordering
 from django.db import models
 from telegram import Update
+import datetime
 
 class User(models.Model):
     telegram_id = models.BigIntegerField(primary_key=True)
@@ -26,8 +27,9 @@ class Category(models.Model):
 class Spending(models.Model):
     amount = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='spendings')
 
     def __str__(self) -> str:
-        return "ID: {id} Amount: {amount} User.ID: {user} Category.ID: {cat}".format(
-            id=self.pk, amount=self.amount, user=self.user.pk, cat=self.category.pk)
+        return "ID: {id} Amount: {amount} User.ID: {user} Category.ID: {cat} DateTime: {datetime}".format(
+            id=self.pk, amount=self.amount, user=self.user.pk, cat=self.category.pk, datetime=self.date)

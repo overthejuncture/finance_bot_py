@@ -2,7 +2,7 @@ from bot.models import (
     User,
     Category
 )
-from bot_helper_py import bot as utils
+from bot_helper_py import utils
 
 from telegram import Update
 from telegram.ext import (
@@ -24,12 +24,12 @@ def handler(name: str):
         run_async=True
     )
 
-def add_category_command(update: Update, context: CallbackContext):
+def add_category_command(update: Update, _: CallbackContext):
     utils.check(update)
     update.message.reply_text('Введите название категории')
     return 0
 
-def add_category(update: Update, context: CallbackContext):
+def add_category(update: Update, _: CallbackContext):
     id = update.message.from_user.id
     cat = Category(name=update.message.text, user=User.objects.get(telegram_id=id))
     cat.save()

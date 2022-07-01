@@ -1,9 +1,8 @@
 from bot.models import (
-    User,
-    Category
+    User
 )
 
-from bot_helper_py import bot as utils
+from bot_helper_py import utils
 
 from telegram import Update
 from telegram.ext import (
@@ -14,5 +13,5 @@ from telegram.ext import (
 def handler(name: str):
     return CommandHandler(name, list)
 
-def list(update: Update, context: CallbackContext):
+def list(update: Update, _: CallbackContext):
     update.message.reply_text(utils.list_all(User.byUpdate(update).categories.all()))

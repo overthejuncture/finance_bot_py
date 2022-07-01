@@ -10,8 +10,8 @@ from telegram.ext import (
 )
 
 from bot_helper_py import (
-    bot as utils,
-    callback_query as callback_helper
+    callback_utils,
+    utils
 )
 
 def handler(name: str):
@@ -23,14 +23,17 @@ def handler(name: str):
                 states={
                     0: [CallbackQueryHandler(get_savings_category)]
                 },
-                fallbacks=[]
+                fallbacks=[],
+                map_to_parent={
+                    ConversationHandler.END: ConversationHandler.END
+                }
             )],
         },
         fallbacks=[],
         allow_reentry=True,
     )
 
-def add_spendings_command(update: Update, context: CallbackContext):
+def add_spendings_command(update: Update, _: CallbackContext):
     update.message.reply_text('Количество в рублях')
     return 0
 
@@ -46,14 +49,14 @@ def get_savings_amount(update: Update, context: CallbackContext):
     return 0
 
 def get_savings_category(update: Update, context: CallbackContext):
-    if callback_helper.is_pager_action(update.callback_query):
+    if callback_utils.is_pager_action(update.callback_query):
         cats = Category.objects.all()
         start, limit = utils.proccess_pager(update)
         text, reply_markup = utils.list_with_keyboard_and_pager(cats, start, limit)
         update.callback_query.edit_message_text(text=text, reply_markup=reply_markup)
         return
 
-    id = callback_helper.get_data(update.callback_query).get('id')
+    id = callback_utils.get_data(update.callback_query).get('id')
     # TODO multiple cats
     update.callback_query.edit_message_reply_markup()
     context.user_data['category'] = id

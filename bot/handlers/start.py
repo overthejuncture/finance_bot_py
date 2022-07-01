@@ -11,7 +11,7 @@ from telegram.ext import (
 def handler(name: str):
     return CommandHandler(name, start)
 
-def start(update: Update, context: CallbackContext):
+def start(update: Update, _: CallbackContext):
     id = update.message.from_user.id
     user = User(telegram_id = id)
     user.save()
