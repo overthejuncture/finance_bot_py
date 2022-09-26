@@ -44,7 +44,7 @@ def get_savings_amount(update: Update, context: CallbackContext):
         return
 
     context.user_data['save'] = {'amount': text}
-    text, reply_markup = utils.list_with_keyboard_and_pager(Category.objects.all())
+    text, reply_markup = utils.list_with_keyboard_and_pager(Category.objects.all(), field=lambda x: x.name)
     update.message.reply_text("Выберите категорию\n" + text, reply_markup=reply_markup)
     return 0
 
@@ -52,7 +52,7 @@ def get_savings_category(update: Update, context: CallbackContext):
     if callback_utils.is_pager_action(update.callback_query):
         cats = Category.objects.all()
         start, limit = utils.proccess_pager(update)
-        text, reply_markup = utils.list_with_keyboard_and_pager(cats, start, limit)
+        text, reply_markup = utils.list_with_keyboard_and_pager(cats, start, limit, lambda x: x.name)
         update.callback_query.edit_message_text(text=text, reply_markup=reply_markup)
         return
 

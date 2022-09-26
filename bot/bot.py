@@ -32,6 +32,6 @@ def startbot() -> None:
     dispatcher.add_handler(list_categories.handler('list_categories'))
     dispatcher.add_handler(categories_actions.handler('categories_actions'))
     dispatcher.add_handler(list_spendings_for_category.handler('list_spendings_for_category'))
-
+ 
     updater.start_polling()
     updater.idle()

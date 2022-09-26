@@ -1,0 +1,7 @@
+[user]
+	name = overthejuncture
+	email = overthejuncture@gmail.com
+[core]
+	autocrlf = true
+[credential]
+	helper = "!f() { /home/.vscode-server/bin/74b1f979648cc44d385a2286793c226e611f59e7/node /tmp/vscode-remote-containers-abb5edb5ea463409e7c419583e8858a30c37cf5c.js $*; }; f"
