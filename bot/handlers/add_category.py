@@ -25,7 +25,6 @@ def handler(name: str):
     )
 
 def add_category_command(update: Update, _: CallbackContext):
-    utils.check(update)
     update.message.reply_text('Введите название категории')
     return 0
 
